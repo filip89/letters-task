@@ -10,18 +10,23 @@ export function scan(map: GameMapScheme): Result {
   const letterCollectionLocations: Location[] = [];
   let pathCharacters: string = '';
 
+  //TODO find end for missing end error
   let currentLocation = findStartLocation(map);
   let currentCharacter: Character | null = player;
-
   let currentDirection: Direction = findAnyPossibleDirection(
     map,
     currentLocation,
   );
 
-  while (currentCharacter && currentCharacter !== end) {
+  while (currentCharacter) {
     pathCharacters += currentCharacter;
+
+    if (currentCharacter === end) {
+      break;
+    }
+
     if (letters.includes(currentCharacter as Letter)) {
-      //TODO if not added already
+      //TODO if not added
       letterCollectionLocations.push(currentLocation);
     }
 
@@ -32,11 +37,15 @@ export function scan(map: GameMapScheme): Result {
     );
 
     if (nextDirection) {
-      currentLocation = getAdjacentLocation(currentLocation, currentDirection);
+      currentLocation = getAdjacentLocation(currentLocation, nextDirection);
       currentCharacter = getLocationCharacter(map, currentLocation);
       currentDirection = nextDirection;
+    } else {
+      currentCharacter = null;
     }
   }
+
+  if (currentCharacter !== end) throw 'Broken path!';
 
   return {
     letters: getCharactersFromLocations(map, letterCollectionLocations),
@@ -53,9 +62,11 @@ export function getNextDirection(
   if (character === end) return;
   if (character === directY || character === directX) {
     return currentDirection;
-  } else if (character === turn) {
+  }
+  if (character === turn) {
     return findTurnDirection(map, currentLocation, currentDirection);
-  } else if (letters.includes(character as Letter)) {
+  }
+  if (letters.includes(character as Letter)) {
     const nextDirectCharacter = getAdjacentCharacter(
       map,
       currentLocation,
@@ -79,13 +90,15 @@ export function findTurnDirection(
 ) {
   const possibleDirections: Direction[] = [];
   if (currentDirection.x === 0) {
-    possibleDirections.push(...findPossibleYDirections(map, currentLocation));
-  } else {
     possibleDirections.push(...findPossibleXDirections(map, currentLocation));
+  } else {
+    possibleDirections.push(...findPossibleYDirections(map, currentLocation));
   }
 
   if (possibleDirections.length > 1) throw Error('Fork found!');
-  if (possibleDirections.length === 0) throw Error('Broken path!');
+  if (possibleDirections.length === 0) {
+    throw Error('Broken path!');
+  }
 
   return possibleDirections[0];
 }
@@ -113,7 +126,7 @@ export function findAnyPossibleDirection(
     ...findPossibleXDirections(map, location),
   ];
 
-  if (possibleDirections.length > 1) throw Error('Fork found!');
+  if (possibleDirections.length > 1) throw Error('Multiple starting paths!');
   if (possibleDirections.length === 0) throw Error('Broken path!');
 
   return possibleDirections[0];
