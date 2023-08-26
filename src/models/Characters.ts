@@ -6,7 +6,6 @@ type TurnSign = typeof turn;
 type DirectXSign = typeof directX;
 type DirectYSign = typeof directY;
 type Letter = (typeof letters)[number];
-type Empty = null | undefined | '';
 
 type Character =
   | PlayerSign
@@ -24,5 +23,4 @@ export type {
   EndSign,
   Letter,
   Character,
-  Empty,
 };

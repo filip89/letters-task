@@ -1,5 +1,5 @@
-import { GameMap } from './types/GameMap.ts';
-import { Character } from './types/Characters.ts';
+import { GameMapScheme } from './models/GameMapScheme.ts';
+import { Character } from './models/Characters.ts';
 import { directX, directY, end, letters, player, turn } from './config.ts';
 
 const characters: Character[] = [
@@ -11,7 +11,7 @@ const characters: Character[] = [
   ...letters,
 ];
 
-export function validateMapElements(map: GameMap) {
+export function validateMapElements(map: GameMapScheme) {
   for (const row of map) {
     for (const element of row) {
       if (!element) continue;
@@ -22,6 +22,6 @@ export function validateMapElements(map: GameMap) {
   return true;
 }
 
-function isValidCharacter(character: Character) {
+export function isValidCharacter(character: Character) {
   return characters.includes(character);
 }

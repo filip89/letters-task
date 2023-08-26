@@ -1,6 +1,6 @@
-import { GameMap } from '../types/GameMap.ts';
+import { GameMapScheme } from '../models/GameMapScheme.ts';
 
-export const map2: GameMap = [
+export const map2: GameMapScheme = [
   ['@'],
   ['|', null, '+', '-', 'C', '-', '-', '+'],
   ['A', null, '|', null, null, null, null, '|'],
