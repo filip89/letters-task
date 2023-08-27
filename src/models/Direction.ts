@@ -1,3 +1,3 @@
-type Step = 0 | 1 | -1;
+import { direction } from '../constants/directions.ts';
 
-export type Direction = { x: Step; y: Step };
+export type Direction = (typeof direction)[keyof typeof direction];

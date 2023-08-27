@@ -1,6 +1,13 @@
-import { GameMapScheme } from './models/GameMapScheme.ts';
+import { GameMap } from './models/GameMap.ts';
 import { Character } from './models/Characters.ts';
-import { directX, directY, end, letters, player, turn } from './config.ts';
+import {
+  directX,
+  directY,
+  end,
+  letters,
+  player,
+  turn,
+} from './constants/config.ts';
 
 const characters: Character[] = [
   player,
@@ -11,10 +18,10 @@ const characters: Character[] = [
   ...letters,
 ];
 
-export function validateMapElements(map: GameMapScheme) {
+export function validateMapElements(map: GameMap) {
   for (const row of map) {
     for (const element of row) {
-      if (!element) continue;
+      if (element === null) continue;
       if (isValidCharacter(element)) continue;
       throw Error('Map contains invalid characters');
     }

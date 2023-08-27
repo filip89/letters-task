@@ -1,7 +1,7 @@
-import { GameMapScheme } from '../../models/GameMapScheme.ts';
-import { Result } from '../../models/Result.ts';
+import { GameMap } from '../../models/GameMap.ts';
+import { ScanResult } from '../../models/ScanResult.ts';
 
-export const basicMap: GameMapScheme = [
+export const basicMap: GameMap = [
   ['@', '-', '-', '-', 'A', '-', '-', '-', '+'],
   [null, null, null, null, null, null, null, null, '|'],
   ['x', '-', 'B', '-', '+', null, null, null, 'C'],
@@ -9,7 +9,7 @@ export const basicMap: GameMapScheme = [
   [null, null, null, null, '+', '-', '-', '-', '+'],
 ];
 
-export const basicMapResult: Result = {
+export const basicMapResult: ScanResult = {
   characters: 'ACB',
   letters: '@---A---+|C|+---+|+-B-x',
 };

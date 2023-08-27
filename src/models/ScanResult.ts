@@ -1,4 +1,4 @@
-export type Result = {
+export type ScanResult = {
   letters: string;
   characters: string;
 };

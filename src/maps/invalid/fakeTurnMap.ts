@@ -1,5 +1,5 @@
-import { GameMapScheme } from '../../models/GameMapScheme.ts';
+import { GameMap } from '../../models/GameMap.ts';
 
-export const fakeTurnMap: GameMapScheme = [
+export const fakeTurnMap: GameMap = [
   ['@', '-', 'A', '-', '+', '-', 'B', '-', 'x'],
 ];

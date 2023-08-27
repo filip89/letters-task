@@ -1,5 +1,5 @@
-import { GameMapScheme } from '../../models/GameMapScheme.ts';
+import { GameMap } from '../../models/GameMap.ts';
 
-export const multipleStartingPathsMap: GameMapScheme = [
+export const multipleStartingPathsMap: GameMap = [
   ['x', '-', 'B', '-', '@', '-', 'A', '-', 'x'],
 ];

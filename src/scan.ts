@@ -1,12 +1,19 @@
-import { GameMapScheme } from './models/GameMapScheme.ts';
-import { Result } from './models/Result.ts';
-import { directX, directY, end, letters, player, turn } from './config.ts';
+import { GameMap } from './models/GameMap.ts';
+import { ScanResult } from './models/ScanResult.ts';
+import {
+  directX,
+  directY,
+  end,
+  letters,
+  player,
+  turn,
+} from './constants/config.ts';
 import { Location } from './models/Location.ts';
 import { Direction } from './models/Direction.ts';
-import { down, left, right, up } from './constants/directions.ts';
 import { Character, Letter } from './models/Characters.ts';
+import { direction } from './constants/directions.ts';
 
-export function scan(map: GameMapScheme): Result {
+export function scan(map: GameMap): ScanResult {
   const letterCollectionLocations: Location[] = [];
   let pathCharacters: string = '';
 
@@ -54,7 +61,7 @@ export function scan(map: GameMapScheme): Result {
 }
 
 export function getNextDirection(
-  map: GameMapScheme,
+  map: GameMap,
   currentLocation: Location,
   currentDirection: Direction,
 ) {
@@ -84,7 +91,7 @@ export function getNextDirection(
 }
 
 export function findTurnDirection(
-  map: GameMapScheme,
+  map: GameMap,
   currentLocation: Location,
   currentDirection: Direction,
 ) {
@@ -103,7 +110,7 @@ export function findTurnDirection(
   return possibleDirections[0];
 }
 
-export function findStartLocation(map: GameMapScheme): Location {
+export function findStartLocation(map: GameMap): Location {
   const playerLocations: Location[] = [];
   map.forEach((row, y) => {
     row.forEach((element, x) => {
@@ -118,7 +125,7 @@ export function findStartLocation(map: GameMapScheme): Location {
 }
 
 export function findAnyPossibleDirection(
-  map: GameMapScheme,
+  map: GameMap,
   location: Location,
 ): Direction {
   const possibleDirections: Direction[] = [
@@ -132,38 +139,32 @@ export function findAnyPossibleDirection(
   return possibleDirections[0];
 }
 
-export function findPossibleYDirections(
-  map: GameMapScheme,
-  location: Location,
-) {
+export function findPossibleYDirections(map: GameMap, location: Location) {
   const possibleDirections: Direction[] = [];
 
-  const upCharacter = getAdjacentCharacter(map, location, up);
-  if (upCharacter) possibleDirections.push(up);
+  const upCharacter = getAdjacentCharacter(map, location, direction.up);
+  if (upCharacter) possibleDirections.push(direction.up);
 
-  const downCharacter = getAdjacentCharacter(map, location, down);
-  if (downCharacter) possibleDirections.push(down);
+  const downCharacter = getAdjacentCharacter(map, location, direction.down);
+  if (downCharacter) possibleDirections.push(direction.down);
 
   return possibleDirections;
 }
 
-export function findPossibleXDirections(
-  map: GameMapScheme,
-  location: Location,
-) {
+export function findPossibleXDirections(map: GameMap, location: Location) {
   const possibleDirections: Direction[] = [];
 
-  const leftCharacter = getAdjacentCharacter(map, location, left);
-  if (leftCharacter) possibleDirections.push(left);
+  const leftCharacter = getAdjacentCharacter(map, location, direction.left);
+  if (leftCharacter) possibleDirections.push(direction.left);
 
-  const rightCharacter = getAdjacentCharacter(map, location, right);
-  if (rightCharacter) possibleDirections.push(right);
+  const rightCharacter = getAdjacentCharacter(map, location, direction.right);
+  if (rightCharacter) possibleDirections.push(direction.right);
 
   return possibleDirections;
 }
 
 export function getAdjacentCharacter(
-  map: GameMapScheme,
+  map: GameMap,
   relativeTo: Location,
   direction: Direction,
 ) {
@@ -171,7 +172,7 @@ export function getAdjacentCharacter(
   return getLocationCharacter(map, location);
 }
 
-export function getLocationCharacter(map: GameMapScheme, location: Location) {
+export function getLocationCharacter(map: GameMap, location: Location) {
   return map[location.y]?.[location.x];
 }
 
@@ -180,7 +181,7 @@ export function getAdjacentLocation(location: Location, direction: Direction) {
 }
 
 export function getCharactersFromLocations(
-  map: GameMapScheme,
+  map: GameMap,
   locations: Location[],
 ): string {
   return locations

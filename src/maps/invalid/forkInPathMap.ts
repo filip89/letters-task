@@ -1,6 +1,6 @@
-import { GameMapScheme } from '../../models/GameMapScheme.ts';
+import { GameMap } from '../../models/GameMap.ts';
 
-export const forkInPathMap: GameMapScheme = [
+export const forkInPathMap: GameMap = [
   [null, null, '-', 'A', '-', 'B', '-', '+'],
   [null, null, null, null, null, null, null, '|'],
   ['@', '-', '-', 'A', '-', '-', '-', '+'],

@@ -1,4 +1,11 @@
-import { directX, directY, end, letters, player, turn } from '../config.ts';
+import {
+  directX,
+  directY,
+  end,
+  letters,
+  player,
+  turn,
+} from '../constants/config.ts';
 
 type PlayerSign = typeof player;
 type EndSign = typeof end;
@@ -15,12 +22,4 @@ type Character =
   | DirectYSign
   | Letter;
 
-export type {
-  PlayerSign,
-  DirectYSign,
-  DirectXSign,
-  TurnSign,
-  EndSign,
-  Letter,
-  Character,
-};
+export type { Letter, Character };

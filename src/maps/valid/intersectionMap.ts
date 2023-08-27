@@ -1,7 +1,7 @@
-import { GameMapScheme } from '../../models/GameMapScheme.ts';
-import { Result } from '../../models/Result.ts';
+import { GameMap } from '../../models/GameMap.ts';
+import { ScanResult } from '../../models/ScanResult.ts';
 
-export const intersectionMap: GameMapScheme = [
+export const intersectionMap: GameMap = [
   ['@'],
   ['|', null, '+', '-', 'C', '-', '-', '+'],
   ['A', null, '|', null, null, null, null, '|'],
@@ -11,7 +11,7 @@ export const intersectionMap: GameMapScheme = [
   [null, null, '+', '-', '-', '-', 'D', '-', '-', '+'],
 ];
 
-export const intersectionMapResult: Result = {
+export const intersectionMapResult: ScanResult = {
   characters: 'ACB',
   letters: '@---A---+|C|+---+|+-B-x',
 };
