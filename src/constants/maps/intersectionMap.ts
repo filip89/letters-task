@@ -1,4 +1,4 @@
-import { DefaultMapInfo } from '../models/DefaultMapInfo.ts';
+import { DefaultMapInfo } from '../defaultMaps.ts';
 
 export const intersectionMap: DefaultMapInfo = {
   map: [

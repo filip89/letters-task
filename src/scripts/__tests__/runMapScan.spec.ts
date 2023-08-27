@@ -2,7 +2,7 @@ import { describe, expect, it, test } from 'vitest';
 import { runMapScan } from '../runMapScan.ts';
 import { GameMap } from '../../models/GameMap.ts';
 import { ScanResult } from '../../models/ScanResult.ts';
-import { defaultMaps } from '../../maps/defaultMaps.ts';
+import { defaultMaps } from '../../constants/defaultMaps.ts';
 
 function testMap(map: GameMap, expectedResult: ScanResult) {
   const result = runMapScan(map);

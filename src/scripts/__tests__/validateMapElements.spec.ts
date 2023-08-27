@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { validateMapElements } from '../validateMapElements.ts';
-import { intersectionMap } from '../../maps/intersectionMap.ts';
+import { intersectionMap } from '../../constants/maps/intersectionMap.ts';
 import { GameMap } from '../../models/GameMap.ts';
 
 describe('validateMapElements', () => {
