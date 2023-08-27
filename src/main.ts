@@ -1,7 +1,7 @@
-import { scan } from './scan.ts';
+import { runMapScan } from './scripts/runMapScan.ts';
+import { activeMap } from './activeMap.ts';
 
-import { fakeTurnMap } from './maps/invalid/fakeTurnMap.ts';
-
-const result = scan(fakeTurnMap);
+const result = runMapScan(activeMap);
 
 console.log(result);
+// alert(JSON.stringify(result));

@@ -1,4 +1,4 @@
-const player = '@';
+const start = '@';
 const end = 'x';
 const directX = '-';
 const directY = '|';
@@ -32,4 +32,4 @@ const letters = [
   'Z',
 ] as const;
 
-export { player, end, turn, directX, directY, letters };
+export { start, end, turn, directX, directY, letters };

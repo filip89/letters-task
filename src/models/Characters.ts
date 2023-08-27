@@ -1,25 +1,12 @@
-import {
-  directX,
-  directY,
-  end,
-  letters,
-  player,
-  turn,
-} from '../constants/config.ts';
+import { directX, directY, end, letters, start, turn } from '../constants/characters.ts';
 
-type PlayerSign = typeof player;
+type StartSign = typeof start;
 type EndSign = typeof end;
 type TurnSign = typeof turn;
 type DirectXSign = typeof directX;
 type DirectYSign = typeof directY;
 type Letter = (typeof letters)[number];
 
-type Character =
-  | PlayerSign
-  | EndSign
-  | TurnSign
-  | DirectXSign
-  | DirectYSign
-  | Letter;
+type Character = StartSign | EndSign | TurnSign | DirectXSign | DirectYSign | Letter;
 
 export type { Letter, Character };

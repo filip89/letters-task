@@ -1,3 +1,3 @@
-import { direction } from '../constants/directions.ts';
+import { directions } from '../constants/directions.ts';
 
-export type Direction = (typeof direction)[keyof typeof direction];
+export type Direction = (typeof directions)[keyof typeof directions];

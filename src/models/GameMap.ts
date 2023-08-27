@@ -1,3 +1,3 @@
 import { Character } from './Characters.ts';
 
-export type GameMap = (Character | null)[][];
+export type GameMap = (Character | null | undefined)[][];
