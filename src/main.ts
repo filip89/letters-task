@@ -1,7 +1,9 @@
-import { runMapScan } from './scripts/runMapScan.ts';
+import { runMapScan } from './functions/runMapScan.ts';
 import { activeMap } from './activeMap.ts';
 
 const result = runMapScan(activeMap);
 
-console.log(result);
-// alert(JSON.stringify(result));
+const display = `${result.letters} \n${result.pathCharacters}`;
+
+console.log(display);
+// alert(display);

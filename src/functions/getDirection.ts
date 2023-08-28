@@ -3,12 +3,28 @@ import { Location } from '../models/Location.ts';
 import { Direction } from '../models/Direction.ts';
 import { directions } from '../constants/directions.ts';
 
-import { getAdjacentCharacter } from './locationUtils.ts';
+import { getAdjacentLocation, isLetterCharacter, readLocationCharacter } from './utils.ts';
+import { directX, directY, end, turn } from '../constants/characters.ts';
+import { Character } from '../models/Characters.ts';
 
-export function findStartDirection(map: GameMap, location: Location): Direction {
+export function getDirection(map: GameMap, currentLocation: Location, activeDirection?: Direction) {
+  if (!activeDirection) return findInitialDirection(map, currentLocation);
+  const character = readLocationCharacter(map, currentLocation);
+  if (!character || character === end) return;
+  if (isDirectCharacter(character)) return activeDirection;
+  if (character === turn) return findTurnDirection(map, currentLocation, activeDirection);
+  if (isLetterCharacter(character))
+    return findLetterDirection(map, currentLocation, activeDirection);
+}
+
+function isDirectCharacter(character: Character) {
+  return character === directY || character === directX;
+}
+
+export function findInitialDirection(map: GameMap, location: Location): Direction {
   const possibleDirections: Direction[] = [
-    ...findDirectionsForVerticalCharacters(map, location),
-    ...findDirectionsForHorizontalCharacters(map, location),
+    ...findVerticalPathDirections(map, location),
+    ...findHorizontalPathDirections(map, location),
   ];
 
   if (possibleDirections.length > 1) throw Error('Multiple starting paths!');
@@ -24,9 +40,9 @@ export function findTurnDirection(
 ) {
   const possibleDirections: Direction[] = [];
   if (currentDirection.x === 0) {
-    possibleDirections.push(...findDirectionsForHorizontalCharacters(map, currentLocation));
+    possibleDirections.push(...findHorizontalPathDirections(map, currentLocation));
   } else {
-    possibleDirections.push(...findDirectionsForVerticalCharacters(map, currentLocation));
+    possibleDirections.push(...findVerticalPathDirections(map, currentLocation));
   }
 
   if (possibleDirections.length > 1) throw Error('Fork found!');
@@ -48,7 +64,7 @@ export function findLetterDirection(
   }
 }
 
-export function findDirectionsForVerticalCharacters(map: GameMap, location: Location) {
+export function findVerticalPathDirections(map: GameMap, location: Location) {
   const possibleDirections: Direction[] = [];
 
   const characterAbove = getAdjacentCharacter(map, location, directions.up);
@@ -60,7 +76,7 @@ export function findDirectionsForVerticalCharacters(map: GameMap, location: Loca
   return possibleDirections;
 }
 
-export function findDirectionsForHorizontalCharacters(map: GameMap, location: Location) {
+export function findHorizontalPathDirections(map: GameMap, location: Location) {
   const possibleDirections: Direction[] = [];
 
   const leftCharacter = getAdjacentCharacter(map, location, directions.left);
@@ -70,4 +86,9 @@ export function findDirectionsForHorizontalCharacters(map: GameMap, location: Lo
   if (rightCharacter) possibleDirections.push(directions.right);
 
   return possibleDirections;
+}
+
+function getAdjacentCharacter(map: GameMap, location: Location, direction: Direction) {
+  const adjacentLocation = getAdjacentLocation(location, direction);
+  return readLocationCharacter(map, adjacentLocation);
 }

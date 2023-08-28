@@ -2,20 +2,57 @@ import { describe, expect, it } from 'vitest';
 import { GameMap } from '../../models/GameMap.ts';
 import {
   findLetterDirection,
-  findDirectionsForVerticalCharacters,
-  findStartDirection,
+  findVerticalPathDirections,
+  findInitialDirection,
   findTurnDirection,
-  findDirectionsForHorizontalCharacters,
-} from '../directionResolvers.ts';
+  findHorizontalPathDirections,
+  getDirection,
+} from '../getDirection.ts';
 import { directions } from '../../constants/directions.ts';
 
-describe('findStartDirection', () => {
+describe('getDirection', () => {
+  const map: GameMap = [
+    ['@', '-', '+'],
+    [null, null, 'x'],
+  ];
+
+  it('should find correct direction on start', () => {
+    const result = getDirection(map, { y: 0, x: 0 });
+    expect(result).toBe(directions.right);
+  });
+
+  it('should find correct direction on straight', () => {
+    const result = getDirection(map, { y: 0, x: 1 }, directions.right);
+    expect(result).toBe(directions.right);
+  });
+
+  it('should find correct direction on turn', () => {
+    const result = getDirection(map, { y: 0, x: 2 }, directions.right);
+    expect(result).toBe(directions.down);
+  });
+
+  it('should return no direction on x', () => {
+    const result = getDirection(map, { y: 1, x: 2 }, directions.down);
+    expect(result).toBeUndefined();
+  });
+
+  it('should return no direction on empty location', () => {
+    const result = getDirection(map, { y: 1, x: 0 }, directions.down);
+    expect(result).toBeUndefined();
+  });
+
+  it('should throw if not on starting path and no active direction provided', () => {
+    expect(() => getDirection(map, { y: 0, x: 1 })).toThrow();
+  });
+});
+
+describe('findInitialDirection', () => {
   it('should find direction if single possible exists', () => {
     const map: GameMap = [
       ['@', '-', '+'],
       [null, null, 'x'],
     ];
-    const result = findStartDirection(map, { y: 0, x: 0 });
+    const result = findInitialDirection(map, { y: 0, x: 0 });
     expect(result).toBe(directions.right);
   });
 
@@ -24,12 +61,12 @@ describe('findStartDirection', () => {
       ['@', '-', '+'],
       ['+', '-', 'x'],
     ];
-    expect(() => findStartDirection(map, { y: 0, x: 0 })).toThrow('Multiple starting paths!');
+    expect(() => findInitialDirection(map, { y: 0, x: 0 })).toThrow('Multiple starting paths!');
   });
 
   it('should throw error if no directions exist', () => {
     const map: GameMap = [['@', null, '+']];
-    expect(() => findStartDirection(map, { y: 0, x: 0 })).toThrow('Broken path!');
+    expect(() => findInitialDirection(map, { y: 0, x: 0 })).toThrow('Broken path!');
   });
 });
 
@@ -101,14 +138,14 @@ describe('findLetterDirection', () => {
   });
 });
 
-describe('findPossibleVerticalDirections', () => {
+describe('findVerticalPathDirections', () => {
   it('should return 2 directions when 2 are possible', () => {
     const map: GameMap = [
       [null, '|'],
       ['-', '+'],
       [null, '|'],
     ];
-    const result = findDirectionsForVerticalCharacters(map, { y: 1, x: 1 });
+    const result = findVerticalPathDirections(map, { y: 1, x: 1 });
     expect(result.length).toBe(2);
   });
 
@@ -117,36 +154,36 @@ describe('findPossibleVerticalDirections', () => {
       ['-', '+'],
       [null, '|'],
     ];
-    const result = findDirectionsForVerticalCharacters(map, { y: 1, x: 1 });
+    const result = findVerticalPathDirections(map, { y: 1, x: 1 });
     expect(result.length).toBe(1);
   });
 
   it('should return 0 direction when 0 possible', () => {
     const map: GameMap = [['A']];
-    const result = findDirectionsForVerticalCharacters(map, { y: 0, x: 0 });
+    const result = findVerticalPathDirections(map, { y: 0, x: 0 });
     expect(result.length).toBe(0);
   });
 });
 
-describe('findPossibleHorizontalDirections', () => {
+describe('findHorizontalPathDirections', () => {
   it('should return 2 directions when 2 are possible', () => {
     const map: GameMap = [
       ['-', '+', '-'],
       [null, '|'],
     ];
-    const result = findDirectionsForHorizontalCharacters(map, { y: 0, x: 1 });
+    const result = findHorizontalPathDirections(map, { y: 0, x: 1 });
     expect(result.length).toBe(2);
   });
 
   it('should return 1 direction when 1 possible', () => {
     const map: GameMap = [[null, '|', '-']];
-    const result = findDirectionsForHorizontalCharacters(map, { y: 0, x: 1 });
+    const result = findHorizontalPathDirections(map, { y: 0, x: 1 });
     expect(result.length).toBe(1);
   });
 
   it('should return 0 direction when 0 possible', () => {
     const map: GameMap = [['A'], ['A']];
-    const result = findDirectionsForHorizontalCharacters(map, { y: 0, x: 0 });
+    const result = findHorizontalPathDirections(map, { y: 0, x: 0 });
     expect(result.length).toBe(0);
   });
 });

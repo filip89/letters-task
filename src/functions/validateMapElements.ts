@@ -2,19 +2,19 @@ import { GameMap } from '../models/GameMap.ts';
 import { Character } from '../models/Characters.ts';
 import { directX, directY, end, letters, start, turn } from '../constants/characters.ts';
 
-const characters: Character[] = [start, end, directX, directY, turn, ...letters];
-
 export function validateMapElements(map: GameMap) {
   let starts: number = 0;
   let ends: number = 0;
   for (const row of map) {
     for (const element of row) {
       if (!element) continue;
+
+      if (element === start) starts++;
+      else if (element === end) ends++;
+
       if (!isValidCharacter(element)) {
         throw Error('Map contains invalid characters!');
       }
-      if (element === start) starts++;
-      else if (element === end) ends++;
     }
   }
 
@@ -25,6 +25,7 @@ export function validateMapElements(map: GameMap) {
   return true;
 }
 
-export function isValidCharacter(character: Character) {
+function isValidCharacter(character: Character) {
+  const characters: Character[] = [start, end, directX, directY, turn, ...letters];
   return characters.includes(character);
 }
