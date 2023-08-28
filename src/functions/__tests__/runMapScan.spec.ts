@@ -3,6 +3,7 @@ import { runMapScan } from '../runMapScan.ts';
 import { GameMap } from '../../models/GameMap.ts';
 import { ScanResult } from '../../models/ScanResult.ts';
 import { defaultMaps } from '../../constants/defaultMaps.ts';
+import { errorMessages } from '../../constants/errorMessages.ts';
 
 function testMap(map: GameMap, expectedResult: ScanResult) {
   const result = runMapScan(map);
@@ -28,7 +29,7 @@ describe('runMapScan', () => {
         [null, null, null, null, '|', null, null, null, '|'],
         [null, null, null, null, '+', '-', '-', '-', '+'],
       ];
-      expect(() => runMapScan(map)).toThrow('Missing start character!');
+      expect(() => runMapScan(map)).toThrow(errorMessages.startMissing);
     });
 
     it('should throw if end is missing', function () {
@@ -39,7 +40,7 @@ describe('runMapScan', () => {
         [null, null, null, null, '|', null, null, null, '|'],
         [null, null, null, null, '+', '-', '-', '-', '+'],
       ];
-      expect(() => runMapScan(map)).toThrow('Missing end character!');
+      expect(() => runMapScan(map)).toThrow(errorMessages.endMissing);
     });
 
     it('should throw if has multiple starts', function () {
@@ -50,7 +51,7 @@ describe('runMapScan', () => {
         [null, null, null, null, '|', null, null, null, '|'],
         [null, null, null, null, '+', '-', '-', '-', '+'],
       ];
-      expect(() => runMapScan(map1)).toThrow('Multiple start characters!');
+      expect(() => runMapScan(map1)).toThrow(errorMessages.multiStart);
 
       const map2: GameMap = [
         [null, '@', '-', '-', 'A', '-', '-', '-', '+'],
@@ -59,7 +60,7 @@ describe('runMapScan', () => {
         [null, null, null, null, null, null, null, null, 'x'],
         [null, null, null, null, '@', '-', 'B', '-', '+'],
       ];
-      expect(() => runMapScan(map2)).toThrow('Multiple start characters!');
+      expect(() => runMapScan(map2)).toThrow(errorMessages.multiStart);
 
       const map3: GameMap = [
         [null, '@', '-', '-', 'A', '-', '-', 'x'],
@@ -68,7 +69,7 @@ describe('runMapScan', () => {
         [null, null, null, null, '|'],
         [null, null, null, null, '@'],
       ];
-      expect(() => runMapScan(map3)).toThrow('Multiple start characters!');
+      expect(() => runMapScan(map3)).toThrow(errorMessages.multiStart);
     });
 
     it('should throw when if has a fork in path', function () {
@@ -81,7 +82,7 @@ describe('runMapScan', () => {
         [null, null, null, '|', null, null, null, '|'],
         [null, null, null, '+', '-', '-', '-', '+'],
       ];
-      expect(() => runMapScan(map)).toThrow('Fork found!');
+      expect(() => runMapScan(map)).toThrow(errorMessages.forkFound);
     });
 
     it('should throw if has broken path', function () {
@@ -91,18 +92,18 @@ describe('runMapScan', () => {
         [],
         [null, null, null, null, null, 'B', '-', 'x'],
       ];
-      expect(() => runMapScan(map)).toThrow('Broken path!');
+      expect(() => runMapScan(map)).toThrow(errorMessages.brokenPath);
     });
 
     it('should throw if has multiple starting paths', function () {
       const map: GameMap = [['x', '-', 'B', '-', '@', '-', 'A', '-', 'x']];
-      expect(() => runMapScan(map)).toThrow('Multiple starting paths!');
+      expect(() => runMapScan(map)).toThrow(errorMessages.multiStartPaths);
     });
 
     it('should throw if has fake turn', function () {
       const map: GameMap = [['@', '-', 'A', '-', '+', '-', 'B', '-', 'x']];
       //TODO could check at findTurnDirection whether it can keep same direction and then throw 'Fake turn'
-      expect(() => runMapScan(map)).toThrow('Broken path!');
+      expect(() => runMapScan(map)).toThrow(errorMessages.brokenPath);
     });
   });
 });

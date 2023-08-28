@@ -1,6 +1,7 @@
 import { GameMap } from '../models/GameMap.ts';
 import { Location } from '../models/Location.ts';
 import { start } from '../constants/characters.ts';
+import { errorMessages } from '../constants/errorMessages.ts';
 
 export function findStartLocation(map: GameMap): Location {
   const startLocations: Location[] = [];
@@ -10,8 +11,8 @@ export function findStartLocation(map: GameMap): Location {
     });
   });
 
-  if (!startLocations.length) throw Error('Start character missing');
-  if (startLocations.length > 1) throw Error('Multiple start characters');
+  if (!startLocations.length) throw errorMessages.startMissing;
+  if (startLocations.length > 1) throw errorMessages.multiStart;
 
   return startLocations[0];
 }

@@ -8,6 +8,7 @@ import { findStartLocation } from './findStartLocation.ts';
 import { getAdjacentLocation, readLocationCharacter } from './utils.ts';
 import { validateMapElements } from './validateMapElements.ts';
 import { getResultFromPath } from './getResultFromPath.ts';
+import { errorMessages } from '../constants/errorMessages.ts';
 
 export function runMapScan(map: GameMap): ScanResult {
   validateMapElements(map);
@@ -30,7 +31,7 @@ function generatePath(map: GameMap): Location[] {
       if (isEndReached) {
         break;
       } else {
-        throw 'Broken path!';
+        throw errorMessages.brokenPath;
       }
     }
 

@@ -1,6 +1,7 @@
 import { GameMap } from '../models/GameMap.ts';
 import { Character } from '../models/Characters.ts';
 import { directX, directY, end, letters, start, turn } from '../constants/characters.ts';
+import { errorMessages } from '../constants/errorMessages.ts';
 
 export function validateMapElements(map: GameMap) {
   let starts: number = 0;
@@ -13,14 +14,14 @@ export function validateMapElements(map: GameMap) {
       else if (element === end) ends++;
 
       if (!isValidCharacter(element)) {
-        throw Error('Map contains invalid characters!');
+        throw errorMessages.invalidCharacter;
       }
     }
   }
 
-  if (starts < 1) throw Error('Missing start character!');
-  if (starts > 1) throw Error('Multiple start characters!');
-  if (ends < 1) throw Error('Missing end character!');
+  if (starts < 1) throw errorMessages.startMissing;
+  if (starts > 1) throw errorMessages.multiStart;
+  if (ends < 1) throw errorMessages.endMissing;
 
   return true;
 }

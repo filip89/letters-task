@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { findStartLocation } from '../findStartLocation.ts';
+import { errorMessages } from '../../constants/errorMessages.ts';
 
 describe('findStartLocation', () => {
   it('should return correct start location if map has a single start', () => {
@@ -10,14 +11,10 @@ describe('findStartLocation', () => {
   });
 
   it('should throw an error if start is missing', () => {
-    expect(() => findStartLocation([['-', 'A', '-']])).toThrow(
-      'Start character missing',
-    );
+    expect(() => findStartLocation([['-', 'A', '-']])).toThrow(errorMessages.startMissing);
   });
 
   it('should throw an error if multiple starts present', () => {
-    expect(() => findStartLocation([['@', 'A', '@']])).toThrow(
-      'Multiple start characters',
-    );
+    expect(() => findStartLocation([['@', 'A', '@']])).toThrow(errorMessages.multiStart);
   });
 });

@@ -9,6 +9,7 @@ import {
   getDirection,
 } from '../getDirection.ts';
 import { directions } from '../../constants/directions.ts';
+import { errorMessages } from '../../constants/errorMessages.ts';
 
 describe('getDirection', () => {
   const map: GameMap = [
@@ -56,17 +57,17 @@ describe('findInitialDirection', () => {
     expect(result).toBe(directions.right);
   });
 
-  it('should throw error if multiple directions exist', () => {
+  it('should throw error if multiple initial directions exist', () => {
     const map: GameMap = [
       ['@', '-', '+'],
       ['+', '-', 'x'],
     ];
-    expect(() => findInitialDirection(map, { y: 0, x: 0 })).toThrow('Multiple starting paths!');
+    expect(() => findInitialDirection(map, { y: 0, x: 0 })).toThrow(errorMessages.multiStartPaths);
   });
 
   it('should throw error if no directions exist', () => {
     const map: GameMap = [['@', null, '+']];
-    expect(() => findInitialDirection(map, { y: 0, x: 0 })).toThrow('Broken path!');
+    expect(() => findInitialDirection(map, { y: 0, x: 0 })).toThrow(errorMessages.brokenPath);
   });
 });
 
@@ -91,7 +92,9 @@ describe('findTurnDirection', () => {
   it('should throw error when no valid direction', () => {
     const map: GameMap = [['@', '-', '+']];
     const location = { y: 0, x: 2 };
-    expect(() => findTurnDirection(map, location, directions.right)).toThrow('Broken path!');
+    expect(() => findTurnDirection(map, location, directions.right)).toThrow(
+      errorMessages.brokenPath,
+    );
   });
 
   it('should throw error when at fork', () => {
@@ -101,7 +104,9 @@ describe('findTurnDirection', () => {
       ['x', '-', '+'],
     ];
     const location = { y: 1, x: 2 };
-    expect(() => findTurnDirection(map, location, directions.right)).toThrow('Fork found!');
+    expect(() => findTurnDirection(map, location, directions.right)).toThrow(
+      errorMessages.forkFound,
+    );
   });
 });
 

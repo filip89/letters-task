@@ -6,6 +6,7 @@ import { directions } from '../constants/directions.ts';
 import { getAdjacentLocation, isLetterCharacter, readLocationCharacter } from './utils.ts';
 import { directX, directY, end, turn } from '../constants/characters.ts';
 import { Character } from '../models/Characters.ts';
+import { errorMessages } from '../constants/errorMessages.ts';
 
 export function getDirection(map: GameMap, currentLocation: Location, activeDirection?: Direction) {
   if (!activeDirection) return findInitialDirection(map, currentLocation);
@@ -27,8 +28,8 @@ export function findInitialDirection(map: GameMap, location: Location): Directio
     ...findHorizontalPathDirections(map, location),
   ];
 
-  if (possibleDirections.length > 1) throw Error('Multiple starting paths!');
-  if (possibleDirections.length === 0) throw Error('Broken path!');
+  if (possibleDirections.length > 1) throw errorMessages.multiStartPaths;
+  if (possibleDirections.length === 0) throw errorMessages.brokenPath;
 
   return possibleDirections[0];
 }
@@ -45,8 +46,8 @@ export function findTurnDirection(
     possibleDirections.push(...findVerticalPathDirections(map, currentLocation));
   }
 
-  if (possibleDirections.length > 1) throw Error('Fork found!');
-  if (possibleDirections.length === 0) throw Error('Broken path!');
+  if (possibleDirections.length > 1) throw errorMessages.forkFound;
+  if (possibleDirections.length === 0) throw errorMessages.brokenPath;
 
   return possibleDirections[0];
 }
