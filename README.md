@@ -1,11 +1,11 @@
 ### How to use:
-#### Go to src/activeMap.ts
+**Go to src/activeMap.ts**
 
 You should be able to only change the 'src/activeMap.ts' file where you can choose one of the default maps or set your own.\
  \
 After your map is ready you can run the app:
 
-#### npm dev
+**npm dev**
 
 Open the browser and check the console.
 
