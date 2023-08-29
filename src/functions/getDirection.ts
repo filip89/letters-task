@@ -4,22 +4,24 @@ import { Direction } from '../models/Direction.ts';
 import { directions } from '../constants/directions.ts';
 
 import { getAdjacentLocation, isLetterCharacter, readLocationCharacter } from './utils.ts';
-import { directX, directY, end, turn } from '../constants/characters.ts';
 import { Character } from '../models/Characters.ts';
 import { errorMessages } from '../constants/errorMessages.ts';
+import { characters } from '../constants/characters.ts';
 
 export function getDirection(map: GameMap, currentLocation: Location, activeDirection?: Direction) {
   if (!activeDirection) return findInitialDirection(map, currentLocation);
   const character = readLocationCharacter(map, currentLocation);
-  if (!character || character === end) return;
+  if (!character || character === characters.end) return;
   if (isDirectCharacter(character)) return activeDirection;
-  if (character === turn) return findTurnDirection(map, currentLocation, activeDirection);
-  if (isLetterCharacter(character))
+  if (character === characters.turn)
+    return findTurnDirection(map, currentLocation, activeDirection);
+  if (isLetterCharacter(character)) {
     return findLetterDirection(map, currentLocation, activeDirection);
+  }
 }
 
 function isDirectCharacter(character: Character) {
-  return character === directY || character === directX;
+  return character === characters.directY || character === characters.directX;
 }
 
 export function findInitialDirection(map: GameMap, location: Location): Direction {
@@ -47,7 +49,12 @@ export function findTurnDirection(
   }
 
   if (possibleDirections.length > 1) throw errorMessages.forkFound;
-  if (possibleDirections.length === 0) throw errorMessages.brokenPath;
+  if (possibleDirections.length === 0) {
+    if (getAdjacentCharacter(map, currentLocation, currentDirection)) {
+      throw errorMessages.fakeTurn;
+    }
+    throw errorMessages.brokenPath;
+  }
 
   return possibleDirections[0];
 }

@@ -10,6 +10,7 @@ import {
 } from '../getDirection.ts';
 import { directions } from '../../constants/directions.ts';
 import { errorMessages } from '../../constants/errorMessages.ts';
+import { runMapScan } from '../runMapScan.ts';
 
 describe('getDirection', () => {
   const map: GameMap = [
@@ -107,6 +108,11 @@ describe('findTurnDirection', () => {
     expect(() => findTurnDirection(map, location, directions.right)).toThrow(
       errorMessages.forkFound,
     );
+  });
+
+  it('should throw if fake turn', function () {
+    const map: GameMap = [['@', '-', 'A', '-', '+', '-', 'B', '-', 'x']];
+    expect(() => runMapScan(map)).toThrow(errorMessages.fakeTurn);
   });
 });
 

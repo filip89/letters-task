@@ -1,6 +1,5 @@
 import { GameMap } from '../models/GameMap.ts';
 import { ScanResult } from '../models/ScanResult.ts';
-import { end } from '../constants/characters.ts';
 import { Location } from '../models/Location.ts';
 import { Direction } from '../models/Direction.ts';
 import { getDirection } from './getDirection.ts';
@@ -9,6 +8,7 @@ import { getAdjacentLocation, readLocationCharacter } from './utils.ts';
 import { validateMapElements } from './validateMapElements.ts';
 import { getResultFromPath } from './getResultFromPath.ts';
 import { errorMessages } from '../constants/errorMessages.ts';
+import { characters } from '../constants/characters.ts';
 
 export function runMapScan(map: GameMap): ScanResult {
   validateMapElements(map);
@@ -27,7 +27,7 @@ function generatePath(map: GameMap): Location[] {
     activeDirection = getDirection(map, currentLocation, activeDirection);
 
     if (!activeDirection) {
-      const isEndReached = readLocationCharacter(map, currentLocation) === end;
+      const isEndReached = readLocationCharacter(map, currentLocation) === characters.end;
       if (isEndReached) {
         break;
       } else {

@@ -1,8 +1,3 @@
-const start = '@';
-const end = 'x';
-const directX = '-';
-const directY = '|';
-const turn = '+';
 const letters = [
   'A',
   'B',
@@ -32,4 +27,11 @@ const letters = [
   'Z',
 ] as const;
 
-export { start, end, turn, directX, directY, letters };
+export const characters = {
+  start: '@',
+  end: 'x',
+  directX: '-',
+  directY: '|',
+  turn: '+',
+  letters,
+} as const;

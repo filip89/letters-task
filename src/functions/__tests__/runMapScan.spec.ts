@@ -72,7 +72,7 @@ describe('runMapScan', () => {
       expect(() => runMapScan(map3)).toThrow(errorMessages.multiStart);
     });
 
-    it('should throw when if has a fork in path', function () {
+    it('should throw if has a fork in path', function () {
       const map: GameMap = [
         [null, 'x', '-', 'A', '-', 'B', '-', '+'],
         [null, null, null, null, null, null, null, '|'],
@@ -102,8 +102,12 @@ describe('runMapScan', () => {
 
     it('should throw if has fake turn', function () {
       const map: GameMap = [['@', '-', 'A', '-', '+', '-', 'B', '-', 'x']];
-      //TODO could check at findTurnDirection whether it can keep same direction and then throw 'Fake turn'
-      expect(() => runMapScan(map)).toThrow(errorMessages.brokenPath);
+      expect(() => runMapScan(map)).toThrow(errorMessages.fakeTurn);
+    });
+
+    it('should throw if has an invalid character', function () {
+      const map: GameMap = [['x', '-', 'r', '-', '@', '-', 'A', '-', 'x']] as GameMap;
+      expect(() => runMapScan(map)).toThrow(errorMessages.invalidCharacter);
     });
   });
 });
