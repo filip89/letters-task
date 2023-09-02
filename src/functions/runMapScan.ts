@@ -4,16 +4,20 @@ import { Location } from '../models/Location.ts';
 import { Direction } from '../models/Direction.ts';
 import { getDirection } from './getDirection.ts';
 import { findStartLocation } from './findStartLocation.ts';
-import { getAdjacentLocation, readLocationCharacter } from './utils.ts';
+import { getAdjacentLocation, isLetterCharacter, readLocationCharacter } from './utils.ts';
 import { validateMapElements } from './validateMapElements.ts';
-import { getResultFromPath } from './getResultFromPath.ts';
 import { errorMessages } from '../constants/errorMessages.ts';
 import { characters } from '../constants/characters.ts';
 
 export function runMapScan(map: GameMap): ScanResult {
   validateMapElements(map);
+
   const path = generatePath(map);
-  return getResultFromPath(map, path);
+
+  return {
+    letters: readPathLetters(map, path),
+    pathCharacters: readPathCharacters(map, path),
+  };
 }
 
 function generatePath(map: GameMap): Location[] {
@@ -40,4 +44,27 @@ function generatePath(map: GameMap): Location[] {
   } while (activeDirection);
 
   return path;
+}
+
+function readPathCharacters(map: GameMap, path: Location[]): string {
+  return path.map((location) => readLocationCharacter(map, location)).join('');
+}
+
+function readPathLetters(map: GameMap, path: Location[]): string {
+  const letterLocations: Location[] = [];
+
+  path.forEach((location) => {
+    const character = readLocationCharacter(map, location);
+    if (character && isLetterCharacter(character) && !locationsInclude(letterLocations, location)) {
+      letterLocations.push(location);
+    }
+  });
+
+  return readPathCharacters(map, letterLocations);
+}
+
+function locationsInclude(locations: Location[], searchLocation: Location) {
+  return locations.some(
+    (location) => location.y === searchLocation.y && location.x === searchLocation.x,
+  );
 }

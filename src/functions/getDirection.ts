@@ -9,7 +9,7 @@ import { errorMessages } from '../constants/errorMessages.ts';
 import { characters } from '../constants/characters.ts';
 
 export function getDirection(map: GameMap, currentLocation: Location, activeDirection?: Direction) {
-  if (!activeDirection) return findInitialDirection(map, currentLocation);
+  if (!activeDirection) return findStartingDirection(map, currentLocation);
   const character = readLocationCharacter(map, currentLocation);
   if (!character || character === characters.end) return;
   if (isDirectCharacter(character)) return activeDirection;
@@ -20,14 +20,10 @@ export function getDirection(map: GameMap, currentLocation: Location, activeDire
   }
 }
 
-function isDirectCharacter(character: Character) {
-  return character === characters.directY || character === characters.directX;
-}
-
-export function findInitialDirection(map: GameMap, location: Location): Direction {
+function findStartingDirection(map: GameMap, location: Location): Direction {
   const possibleDirections: Direction[] = [
-    ...findVerticalPathDirections(map, location),
-    ...findHorizontalPathDirections(map, location),
+    ...findPossibleVerticalDirections(map, location),
+    ...findPossibleHorizontalDirections(map, location),
   ];
 
   if (possibleDirections.length > 1) throw errorMessages.multiStartPaths;
@@ -36,16 +32,16 @@ export function findInitialDirection(map: GameMap, location: Location): Directio
   return possibleDirections[0];
 }
 
-export function findTurnDirection(
-  map: GameMap,
-  currentLocation: Location,
-  currentDirection: Direction,
-) {
+function isDirectCharacter(character: Character) {
+  return character === characters.directY || character === characters.directX;
+}
+
+function findTurnDirection(map: GameMap, currentLocation: Location, currentDirection: Direction) {
   const possibleDirections: Direction[] = [];
   if (currentDirection.x === 0) {
-    possibleDirections.push(...findHorizontalPathDirections(map, currentLocation));
+    possibleDirections.push(...findPossibleHorizontalDirections(map, currentLocation));
   } else {
-    possibleDirections.push(...findVerticalPathDirections(map, currentLocation));
+    possibleDirections.push(...findPossibleVerticalDirections(map, currentLocation));
   }
 
   if (possibleDirections.length > 1) throw errorMessages.forkFound;
@@ -59,11 +55,7 @@ export function findTurnDirection(
   return possibleDirections[0];
 }
 
-export function findLetterDirection(
-  map: GameMap,
-  currentLocation: Location,
-  currentDirection: Direction,
-) {
+function findLetterDirection(map: GameMap, currentLocation: Location, currentDirection: Direction) {
   const nextDirectCharacter = getAdjacentCharacter(map, currentLocation, currentDirection);
   if (nextDirectCharacter) {
     return currentDirection;
@@ -72,7 +64,7 @@ export function findLetterDirection(
   }
 }
 
-export function findVerticalPathDirections(map: GameMap, location: Location) {
+function findPossibleVerticalDirections(map: GameMap, location: Location) {
   const possibleDirections: Direction[] = [];
 
   const characterAbove = getAdjacentCharacter(map, location, directions.up);
@@ -84,7 +76,7 @@ export function findVerticalPathDirections(map: GameMap, location: Location) {
   return possibleDirections;
 }
 
-export function findHorizontalPathDirections(map: GameMap, location: Location) {
+function findPossibleHorizontalDirections(map: GameMap, location: Location) {
   const possibleDirections: Direction[] = [];
 
   const leftCharacter = getAdjacentCharacter(map, location, directions.left);

@@ -22,8 +22,6 @@ export function validateMapElements(map: GameMap) {
   if (starts < 1) throw errorMessages.startMissing;
   if (starts > 1) throw errorMessages.multiStart;
   if (ends < 1) throw errorMessages.endMissing;
-
-  return true;
 }
 
 function isValidCharacter(character: Character) {
