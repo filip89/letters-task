@@ -65,25 +65,20 @@ function findLetterDirection(map: GameMap, currentLocation: Location, currentDir
 }
 
 function findPossibleVerticalDirections(map: GameMap, location: Location) {
-  const possibleDirections: Direction[] = [];
-
-  const characterAbove = getAdjacentCharacter(map, location, directions.up);
-  if (characterAbove) possibleDirections.push(directions.up);
-
-  const characterBelow = getAdjacentCharacter(map, location, directions.down);
-  if (characterBelow) possibleDirections.push(directions.down);
-
-  return possibleDirections;
+  return findPossibleDirections(map, location, [directions.up, directions.down]);
 }
 
 function findPossibleHorizontalDirections(map: GameMap, location: Location) {
+  return findPossibleDirections(map, location, [directions.left, directions.right]);
+}
+
+function findPossibleDirections(map: GameMap, location: Location, allowedDirections: Direction[]) {
   const possibleDirections: Direction[] = [];
 
-  const leftCharacter = getAdjacentCharacter(map, location, directions.left);
-  if (leftCharacter) possibleDirections.push(directions.left);
-
-  const rightCharacter = getAdjacentCharacter(map, location, directions.right);
-  if (rightCharacter) possibleDirections.push(directions.right);
+  allowedDirections.forEach((allowedDirection) => {
+    const leftCharacter = getAdjacentCharacter(map, location, allowedDirection);
+    if (leftCharacter) possibleDirections.push(allowedDirection);
+  });
 
   return possibleDirections;
 }
