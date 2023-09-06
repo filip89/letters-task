@@ -24,13 +24,15 @@ export function validateMapElements(map: GameMap) {
   if (ends < 1) throw errorMessages.endMissing;
 }
 
+const charactersSet = new Set([
+  characters.start,
+  characters.end,
+  characters.directX,
+  characters.directY,
+  characters.turn,
+  ...characters.letters,
+]);
+
 function isValidCharacter(character: Character) {
-  return [
-    characters.start,
-    characters.end,
-    characters.directX,
-    characters.directY,
-    characters.turn,
-    ...characters.letters,
-  ].includes(character);
+  return charactersSet.has(character);
 }
